@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear usuario</title>
+</head>
+<body>
+    <h1>Crear nuevo usuario</h1>
+    <form method="post" action="/users">
+        <label>Nombre:</label>
+        <input type="text" name="name"><br>
+        <label>Email:</label>
+        <input type="email" name="email"><br>
+        <button type="submit">Crear usuario</button>
+    </form>
+</body>
+</html>

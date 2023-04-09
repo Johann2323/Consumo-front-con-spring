@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Enviar Params</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+</head>
+
+<body>
+	<h1 class="color-rojo">Enviar parametros de la ruta Path Variable 1</h1>
+
+	<ul>
+		<li>
+			<a class="color-azul" th:href="@{/variables/string/} +'Que tal Johann!'">/variables/string/Que tal Johann!</a>
+		</li>
+		<li>
+			<a th:href="@{/variables/string/}+'Que tal Patrick!'">/variables/string/Que tal Patrick!</a>
+		</li>
+		<li>
+			<a th:href="@{/variables/string/}+'Que bueno verte Johann!'+'/'+90">/variables/string/Que bueno verte Johann!</a>
+		</li>
+		<li>
+			<a th:href="@{/variables/string/}+ ${titulo}">/variables/string/titulo</a>
+		</li>
+		
+		<img th:src="@{/imagenes/spring.gif}"></img>
+	</ul>
+	
+	<h2 class="color-azul">Aplicando colores css</h2>
+
+</body>
+
+</html>
