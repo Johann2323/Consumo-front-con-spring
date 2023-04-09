@@ -198,7 +198,31 @@ public class UsuarioController {
 			    return "tablaalquiler";
 			}
 			
-			
+	//EditarController
+			@GetMapping("/clientes/editar")
+			public String editarCliente(@RequestParam("id") Long idCliente, Model model) {
+			    cliente cliente = null;
+			    for (cliente c : clientes) { // Buscar el cliente en el array
+			        if (c.getId_cliente() == idCliente) {
+			            cliente = c;
+			            break;
+			        }
+			    }
+			    model.addAttribute("cliente", cliente); // Agregar el cliente al modelo
+			    return "editarcliente"; // Devolver la vista del formulario de edición
+			}
+
+			@PostMapping("/clientes/editar")
+			public String actualizarCliente(@ModelAttribute("cliente") cliente cliente) {
+			    for (int i = 0; i < clientes.size(); i++) { // Buscar el cliente en el array y actualizarlo
+			        if (clientes.get(i).getId_cliente() == cliente.getId_cliente()) {
+			            clientes.set(i, cliente);
+			            break;
+			        }
+			    }
+			    return "redirect:/listarcliente"; // Redirigir a la vista de la lista de clientes
+			}
+
 	 
 	 
 			
