@@ -203,22 +203,31 @@ body{
 
 <div class="login-box">
   <p>Registro de cliente</p>
-  <form id="miFormulario" th:action="@{/GuardarClientes}" method="post">  
+  <form id="miFormulario" th:action="@{/GuardarClientes}" method="post" th:object="${cliente}">  
   
     <div class="user-box">
-      <input required="" name="cedula" type="text" >
+    <span style="color: red; display: flex; align-items: center;"
+					th:if="${#fields.hasErrors('cedula_cliente')}" th:errors="*{cedula_cliente}"></span>
+
+      <input name="cedula" type="number" th:field="*{cedula_cliente}" >
       <label>Cedula</label>
     </div>
     <div class="user-box">
-      <input required="" name="nombres" type="text"  >
+     <span style="color: red; display: flex; align-items: center;"
+					th:if="${#fields.hasErrors('nombre_cliente')}" th:errors="*{nombre_cliente}"></span>
+      <input  name="nombres" type="text"  th:field="*{nombre_cliente}" >
       <label>Nombres</label>
     </div>
     <div class="user-box">
-      <input required="" name="apellidos" type="text" >
+     <span style="color: red; display: flex; align-items: center;"
+					th:if="${#fields.hasErrors('apellido_cliente')}" th:errors="*{apellido_cliente}"></span>
+      <input  name="apellidos" type="text" th:field="*{apellido_cliente}" >
       <label>Apellidos</label>
     </div>
     <div class="user-box">
-      <input required="" name="direccion" type="text"  >
+     <span style="color: red; display: flex; align-items: center;"
+					th:if="${#fields.hasErrors('direccion_cliente')}" th:errors="*{direccion_cliente}"></span>
+      <input  name="direccion" type="text"  th:field="*{direccion_cliente}" >
 
       <label>Direccion</label>
     </div>
@@ -457,7 +466,6 @@ ul a:hover::after {
         <li><a href="http://localhost:8080/alquiler">Alquilar Disfraz</a></li>
         <li><a href="#">Contact</a></li>
     </ul>	
-
 
 
 

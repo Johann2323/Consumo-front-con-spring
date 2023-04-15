@@ -13,6 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.NumberFormat;
 
 
 
@@ -27,12 +32,18 @@ public class cliente implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_cliente;
-
-
-	private String cedula_cliente;
-	private String nombre_cliente;
 	
+	@NotBlank
+	@Size(min = 10,message = "Cedula no valida")
+	private String cedula_cliente;
+	@NotBlank
+	@Size(min = 5,message = "No valido")
+	private String nombre_cliente;
+	@NotBlank
+	@Size(min = 5,message = "No valido")
 	private String apellido_cliente;
+	@NotBlank
+	@Size(min = 5,message = "No valido")
 	private String direccion_cliente;
 	private boolean estado_cliente;
 	

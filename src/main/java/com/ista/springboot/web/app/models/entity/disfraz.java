@@ -13,6 +13,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+
+import org.springframework.lang.NonNull;
+
+import com.ista.springboot.web.app.models.validations.ValidNum;
 
 
 
@@ -20,7 +29,7 @@ import javax.persistence.UniqueConstraint;
 
 
 
-@Table(name = "Disfraz",uniqueConstraints = @UniqueConstraint(columnNames = "codigo_disfraz"))
+@Table(name = "disfraz",uniqueConstraints = @UniqueConstraint(columnNames = "codigo_disfraz"))
 @Entity
 public class disfraz implements Serializable{
 	/**
@@ -31,15 +40,39 @@ public class disfraz implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_disfraz;
 	
-
+	
 	private String codigo_disfraz;
+	
+	@Size(min=5,max=50)
 	private String descripcion_disfraz;
 	
-	private double precio_disfraz;
+	@Positive
+	@ValidNum
+	private Double precio_disfraz;
+	
+	@NotEmpty
 	private String tipo_disfraz;
 	private boolean estado;
 	
 	
+	public disfraz(Long id_disfraz, String codigo_disfraz,
+			@NotBlank(message = "La descripción del disfraz es obligatoria") String descripcion_disfraz,
+			Double precio_disfraz, String tipo_disfraz, boolean estado) {
+		super();
+		this.id_disfraz = id_disfraz;
+		this.codigo_disfraz = codigo_disfraz;
+		this.descripcion_disfraz = descripcion_disfraz;
+		this.precio_disfraz = precio_disfraz;
+		this.tipo_disfraz = tipo_disfraz;
+		this.estado = estado;
+	}
+	
+	
+	public disfraz() {
+		
+	}
+
+
 	public Long getId_disfraz() {
 		return id_disfraz;
 	}
@@ -59,10 +92,10 @@ public class disfraz implements Serializable{
 		this.descripcion_disfraz = descripcion_disfraz;
 	}
 
-	public double getPrecio_disfraz() {
+	public Double getPrecio_disfraz() {
 		return precio_disfraz;
 	}
-	public void setPrecio_disfraz(double precio_disfraz) {
+	public void setPrecio_disfraz(Double precio_disfraz) {
 		this.precio_disfraz = precio_disfraz;
 	}
 	public String getTipo_disfraz() {

@@ -204,20 +204,27 @@
 <body>
 	<div class="login-box">
 		<p>Añadir Disfraz</p>
-		<form id="miFormulario" th:action="@{/GuardarDisfraz}" method="post" onsubmit="return validarSelect()">
+		<form id="miFormulario" th:action="@{/GuardarDisfrazobj}" th:object="${disfraz}" method="post">
 
 
 			<div class="user-box">
-				<input required="" name="descripcion" type="text">
+			<span style="color: red; display: flex; align-items: center;"
+					th:if="${#fields.hasErrors('descripcion_disfraz')}" th:errors="*{descripcion_disfraz}"></span>
+				<input type="text" th:field="*{descripcion_disfraz}" required>
 				<label>Descripcion</label>
 			</div>
+
 			<div class="user-box">
-				<input required="" name="precio" type="number">
+				<span style="color: red; display: flex; align-items: center;"
+					th:if="${#fields.hasErrors('precio_disfraz')}" th:errors="*{precio_disfraz}"></span>
+				<input required="" type="number" th:field="*{precio_disfraz}">
+
 				<label>Precio</label>
 			</div>
+
 			<div>
 				<label for="traje" style="color: #f5f5f5;">Tipo de disfraz:</label>
-				<select name="tipo" id="disfraz">
+				<select name="tipo" id="disfraz" th:field="*{tipo_disfraz}">
 					<option value="" selected disabled>Selecciona un tipo</option>
 					<option value="Teatrales">Teatrales</option>
 					<option value="Festivales">Festivales</option>
@@ -231,12 +238,12 @@
 			<label style="color: aliceblue;">Estado</label>
 			<div class="radio-wrapper">
 				<label class="radio-container">
-					<input type="radio" name="estado" value="activo" checked>
+					<input type="radio" name="estado" value="true" checked>
 					<span class="radio-checkmark"></span>
 					<span class="radio-label" style="color: aliceblue;">Activo</span>
 				</label>
 				<label class="radio-container">
-					<input type="radio" name="estado" value="inactivo">
+					<input type="radio" name="estado" value="false">
 					<span class="radio-checkmark"></span>
 					<span class="radio-label" style="color: aliceblue;">Inactivo</span>
 				</label>

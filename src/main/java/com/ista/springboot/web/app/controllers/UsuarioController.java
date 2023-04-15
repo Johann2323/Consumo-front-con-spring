@@ -4,6 +4,8 @@ package com.ista.springboot.web.app.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 
@@ -12,6 +14,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import com.ista.springboot.web.app.models.entity.alquiler;
 import com.ista.springboot.web.app.models.entity.cliente;
 import com.ista.springboot.web.app.models.entity.disfraz;
+import com.ista.springboot.web.app.models.validations.ValidNum;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +23,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.validation.Valid;
+
 import java.util.Random;
 
 @Controller
@@ -33,6 +39,8 @@ public class UsuarioController {
 	
 	 @GetMapping("/cliente")
 	    public String ejemplo(Model model) {
+		 cliente cliente = new cliente();
+	        model.addAttribute("cliente", cliente);
 	        model.addAttribute("mensaje", "¡Hola desde Thymeleaf!");
 	        return "cliente";
 	    }
@@ -47,30 +55,31 @@ public class UsuarioController {
 	 //Registrocliente
 	
 	 @PostMapping("/GuardarClientes")
-		public String guardarClientes(Model model,@RequestParam String cedula, @RequestParam String nombres, @RequestParam String apellidos, @RequestParam String direccion, @RequestParam String estado) {
-			boolean est=true;
-			System.out.println(estado);
-			if(estado.equalsIgnoreCase("activo")) {
-				est=true;
-				System.out.println("entree");
-			}
-			if(estado.equalsIgnoreCase("inactivo")) {
-				est=false;
-				System.out.println("entree false");
-			}
-			cliente  cliente = new cliente();
-			int total =clientes.size()+1;
-			
-			cliente.setId_cliente( (long) total);
-			cliente.setCedula_cliente(cedula);
-			cliente.setNombre_cliente(nombres);
-			cliente.setApellido_cliente(apellidos);
-			cliente.setDireccion_cliente(direccion);
-			cliente.setEstado_cliente(est);
-			clientes.add(cliente);
-			model.addAttribute("clientes", clientes);
-			System.out.println("Cliente guardado "+cliente.getNombre_cliente()+clientes.size());
-			return "redirect:/listarcliente";
+		public String guardarClientes(Model model, @ModelAttribute("cliente") @Valid cliente cliente, BindingResult result,@RequestParam String estado) {
+		 if (result.hasErrors()) {
+		        // Si hay errores de validación, volver a la página del formulario para que se muestren los mensajes de error
+		        return "cliente";
+		    } else {
+			    boolean est=true;
+				System.out.println(estado);
+				if(estado.equalsIgnoreCase("activo")) {
+					est=true;
+					System.out.println("entree");
+				}
+				if(estado.equalsIgnoreCase("inactivo")) {
+					est=false;
+					System.out.println("entree false");
+				}
+				
+				int total =clientes.size()+1;
+				
+				cliente.setId_cliente( (long) total);
+				cliente.setEstado_cliente(est);
+				clientes.add(cliente);
+				model.addAttribute("clientes", clientes);
+				System.out.println("Cliente guardado "+cliente.getNombre_cliente()+clientes.size());
+				return "redirect:/listarcliente";
+		    }
 		}
 		
 		@GetMapping("/listarcliente")
@@ -80,10 +89,48 @@ public class UsuarioController {
 		}
 		
 		
+		//////////
+		
+		@PostMapping("/GuardarDisfrazobj")
+		public String guardarDisfraz1(Model model, @ModelAttribute("disfraz") @Valid disfraz disfraz, BindingResult result) {
+			 if (result.hasErrors()) {
+			        // Si hay errores de validación, volver a la página del formulario para que se muestren los mensajes de error
+			        return "disfraz";
+			    } else {
+			        // Si no hay errores de validación, procesar los datos del formulario
+			        // ...
+			    	int total =disfrazes.size()+1;
+					
+					String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			        int longitud = 8;
+			        StringBuilder codigoBuilder = new StringBuilder();
+			        Random rnd = new Random();
+			        
+			        for (int i = 0; i < longitud; i++) {
+			            int index = rnd.nextInt(caracteres.length());
+			            codigoBuilder.append(caracteres.charAt(index));
+			        }
+			        
+			        String codigo = codigoBuilder.toString();
+			        System.out.println(codigo);
+			        boolean est=true;
+					disfraz.setId_disfraz( (long) total);
+					disfraz.setCodigo_disfraz(codigo);
+					disfrazes.add(disfraz);
+					model.addAttribute("disfrazes", disfrazes);
+					System.out.println("Disfraz guardado "+disfraz.getCodigo_disfraz()+disfrazes.size());
+					return "redirect:/listardisfraz";
+			    }
+			
+			
+		}
+		
+		////////
+		
 		 //Registrodisfraz
 		
 		 @PostMapping("/GuardarDisfraz")
-			public String guardarDisfraz(Model model,@RequestParam String descripcion, @RequestParam Double precio, @RequestParam String tipo, @RequestParam String estado) {
+			public String guardarDisfraz(Model model,@RequestParam String descripcion, @RequestParam  Double precio, @RequestParam String tipo, @RequestParam String estado) {
 				
 				disfraz  disfraz = new disfraz();
 				int total =disfrazes.size()+1;
@@ -257,6 +304,8 @@ public class UsuarioController {
 	 @GetMapping("/disfraz")
 	    public String ejemplo1(Model model) {
 	        model.addAttribute("mensaje", "¡Hola desde Thymeleaf!");
+	        disfraz disfraz = new disfraz();
+	        model.addAttribute("disfraz", disfraz);
 	        return "disfraz";
 	    }
 	 
